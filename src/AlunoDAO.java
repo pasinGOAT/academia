@@ -12,7 +12,7 @@ public class AlunoDAO {
         Connection conn = Conexao.conectar();
 
         try {
-            String sql = "INSERT INTO aluno (nome, idade, peso, altura, plano) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO aluno (nome, idade, peso, altura, plano, login, senha) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setString(1, aluno.getNome());
@@ -20,6 +20,8 @@ public class AlunoDAO {
             stmt.setDouble(3, aluno.getPeso());
             stmt.setDouble(4, aluno.getAltura());
             stmt.setString(5, aluno.getPlano());
+            stmt.setString(6, aluno.getLogin());
+            stmt.setString(7, aluno.getSenha());
 
             stmt.executeUpdate();
             conn.close();
@@ -41,12 +43,14 @@ public class AlunoDAO {
 
             while (rs.next()) {
                 Aluno aluno = new Aluno(
-                    rs.getString("id"),
+                    rs.getInt("id"),
                     rs.getString("nome"),
                     rs.getInt("idade"),
                     rs.getDouble("peso"),
                     rs.getDouble("altura"),
-                    rs.getString("plano")
+                    rs.getString("plano"),
+                    rs.getString("login"),
+                    rs.getString("senha")
                 );
                 alunos.add(aluno);
             }
@@ -60,13 +64,13 @@ public class AlunoDAO {
     }
 
     // EXCLUIR ALUNOS
-    public void excluirAluno(String nome) {
+    public void excluirAluno(int id) {
         Connection conn = Conexao.conectar();
 
         try {
-            String sql = "DELETE FROM aluno WHERE nome = ?";
+            String sql = "DELETE FROM aluno WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, nome);
+            stmt.setInt(1, id);
 
             int linhasAfetadas = stmt.executeUpdate();
             conn.close();

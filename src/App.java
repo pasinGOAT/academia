@@ -21,15 +21,17 @@ public class App {
             System.out.println("Bem-vindo, " + usuarioLogado.getCargo());
 
             if (usuarioLogado.getCargo().equals("admin")) {
+                AlunoDAO alunoDAO = new AlunoDAO(); // Adicionado para resolver o erro
                 int opcao;
                 do {
                     System.out.println("\nPainel do ADMIN");
                     System.out.println("1 - Cadastrar novo usuário");
                     System.out.println("2 - Excluir usuário");
-                    System.out.println("3 - Sair");
+                    System.out.println("3 - Exibir Iformações dos usuários");
+                System.out.println(("4 - Sair"));
                     System.out.print("Escolha: ");
                     opcao = sc.nextInt();
-                    sc.nextLine(); // limpar buffer
+                    sc.nextLine(); 
 
                     switch (opcao) {
                         case 1:
@@ -44,17 +46,64 @@ public class App {
 
                             Usuario novoUsuario = new Usuario(novoLogin, novaSenha, novoCargo);
                             dao.cadastrarUsuario(novoUsuario);
+                            
+                             System.out.println("=== Cadastro de Alunos ===");
+                    System.out.print("Nome: ");
+                    String nome = sc.nextLine();
+
+                    System.out.print("Idade: ");
+                    int idade = sc.nextInt();
+
+                    System.out.print("Peso: ");
+                    double peso = sc.nextDouble();
+
+                    System.out.print("Altura: ");
+                    double altura = sc.nextDouble();
+                    sc.nextLine(); // limpa o buffer
+
+                    System.out.println("Selecione o plano:");
+                    System.out.println("--> Mensal");
+                    System.out.println("--> Trimestral");
+                    System.out.println("--> Semestral");
+                    System.out.println("--> Anual");
+                    String plano = sc.nextLine();
+
+                    Aluno novoAluno = new Aluno(nome, idade, peso, altura, plano, login, senha);
+                    alunoDAO.inserirAluno(novoAluno); // <- grava no banco
+
+                    System.out.println("Aluno cadastrado com sucesso!");
+                    
+
                             break;
 
                         case 2:
-                            System.out.print("Login do usuário a ser removido: ");
+                            System.out.print("ID do usuário a ser removido: ");
                             String loginExcluir = sc.nextLine();
                             dao.excluirUsuario(loginExcluir);
                             break;
 
                         case 3:
-                            System.out.println("Saindo do painel...");
+                            System.out.println("=== Exibir Informações ===");
+                            List<Aluno> alunos = alunoDAO.listarAlunos();
+
+                            if (alunos.isEmpty()) {
+                                System.out.println("Nenhum aluno cadastrado no banco.");
+                            } else {
+                                for (Aluno a : alunos) {
+                                    System.out.println("ID: " + a.getId());
+                                    System.out.println("Nome: " + a.getNome());
+                                    System.out.println("Idade: " + a.getIdade());
+                                    System.out.println("Peso: " + a.getPeso());
+                                    System.out.println("Altura: " + a.getAltura());
+                                    System.out.println("Plano: " + a.getPlano());
+                                    System.out.println("-------------------------");
+                                }
+                            }
                             break;
+
+                        case 4:
+                        System.out.println("Saindo do painel...");
+                                
 
                         default:
                             System.out.println("Opção inválida.");
@@ -69,7 +118,30 @@ public class App {
         }
         
       if (usuarioLogado.getCargo().equals("membro")) {
-                int opcao; 
+                
+        do {
+            System.out.println("\n=== Painel do Membro ===");
+            System.out.println("1 - Exibir ficha do aluno");
+            System.out.println("2 - Treinos");
+            System.out.println("3 - Sair");
+            System.out.print("Escolha uma opção: ");
+            int opcaoMembro = sc.nextInt();
+            sc.nextLine(); // limpar buffer
+
+            switch (opcaoMembro) {
+                case 1:
+                    AlunoDAO alunoDAO = new AlunoDAO();
+                    List<Aluno> alunos = alunoDAO.listarAlunos();
+                    if (alunos.isEmpty()) {
+                        System.out.println("Nenhum aluno cadastrado.");
+                    } else {
+                        for (Aluno a : alunos) {
+                            a.ExibirFicha();
+                        }
+                    }
+                    break;
+                case 2:
+                  int opcao; 
                 System.out.println("\n=== Painel do Membro (Treinos) ===");
                 System.out.println("1 - Segunda");
                 System.out.println("2 - Terça");
@@ -79,8 +151,10 @@ public class App {
                 System.out.println("6 - Sábado");
                 System.out.println("7 - Domingo");
                 System.out.println("8 - Sair");
-                do {
-                    System.out.print("Escolha uma opção: ");
+                System.out.print("Escolha uma opção: ");
+
+                  do {
+            
                     opcao = sc.nextInt();
                     sc.nextLine(); // limpar buffer
 
@@ -113,94 +187,25 @@ public class App {
                             System.out.println("Opção inválida. Tente novamente.");
                     }
                 } while (opcao != 8);
+                    break;
+                case 3:
+                    System.out.println("Saindo do painel...");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+
+        
+        
+                
                 
               
 
-
-        Scanner read = new Scanner(System.in);
-        Connection conn = Conexao.conectar();
-
-   
-
-        AlunoDAO alunoDAO = new AlunoDAO();
-
-        while (true) {
-            System.out.println("BEM-VINDO AO SISTEMA DE ACADEMIA");
-            System.out.println("ESCOLHA SEU MÉTODO DESEJADO:");
-            System.out.println("1 - Cadastrar Aluno");
-            System.out.println("2 - Exibir Informações");
-            System.out.println("3 - Excluir Aluno");
-            System.out.println("4 - Sair");
-            int op = read.nextInt();
-            read.nextLine();
-
-            if (op == 4) {
-                System.out.println("Encerrando Programa...");
                 break;
             }
-
-            switch (op) {
-                case 1:
-                    System.out.println("=== Cadastro de Alunos ===");
-                    System.out.print("Nome: ");
-                    String nome = read.nextLine();
-
-                    System.out.print("Idade: ");
-                    int idade = read.nextInt();
-
-                    System.out.print("Peso: ");
-                    double peso = read.nextDouble();
-
-                    System.out.print("Altura: ");
-                    double altura = read.nextDouble();
-                    read.nextLine(); // limpa o buffer
-
-                    System.out.println("Selecione o plano:");
-                    System.out.println("--> Mensal");
-                    System.out.println("--> Trimestral");
-                    System.out.println("--> Semestral");
-                    System.out.println("--> Anual");
-                    String plano = read.nextLine();
-
-                    Aluno novoAluno = new Aluno(nome, idade, peso, altura, plano);
-                    alunoDAO.inserirAluno(novoAluno); // <- grava no banco
-
-                    System.out.println("Aluno cadastrado com sucesso!");
-                    break;
-
-                case 2:
-                    System.out.println("=== Exibir Informações ===");
-                    List<Aluno> alunos = alunoDAO.listarAlunos();
-
-                    if (alunos.isEmpty()) {
-                        System.out.println("Nenhum aluno cadastrado no banco.");
-                    } else {
-                        for (Aluno a : alunos) {
-                            System.out.println("ID: " + a.getId());
-                            System.out.println("Nome: " + a.getNome());
-                            System.out.println("Idade: " + a.getIdade());
-                            System.out.println("Peso: " + a.getPeso());
-                            System.out.println("Altura: " + a.getAltura());
-                            System.out.println("Plano: " + a.getPlano());
-                            System.out.println("-------------------------");
-                        }
-                    }
-                    break;
-
-                case 3:
-                    System.out.println("=== Excluir Aluno ===");
-                    System.out.print("Digite o nome do aluno a ser excluído: ");
-                    String nomeExcluir = read.nextLine();
-
-                    alunoDAO.excluirAluno(nomeExcluir);
-                    break;
-
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
-            }
-        }
-
-        read.close();
+        } while (true); 
     }
+
+sc.close();
 }
+
 }

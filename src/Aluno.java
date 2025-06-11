@@ -1,35 +1,54 @@
 public class Aluno {
    
-    private String id;
+    private int id;
     private String nome;
     private int idade;
     private double peso;
     private double altura;
     private String plano;
-
+    private String login;
+    private String senha;
     // Construtor com ID, usado para exibição de informações
-    public Aluno(String id, String nome, int idade, double peso, double altura, String plano) {
+    public Aluno(int id, String nome, int idade, double peso, double altura, String plano, String login, String senha) {
         this.id = id;
         this.nome = nome;
         this.idade = idade;
         this.peso = peso;
         this.altura = altura;
         this.plano = plano;
+        this.login = login;
+        this.senha = senha;
     }
     // Construtor sem ID, usado para cadastro
-    public Aluno(String nome, int idade, double peso, double altura, String plano) {
+    public Aluno(String nome, int idade, double peso, double altura, String plano, String login, String senha) {
         this.nome = nome;
         this.idade = idade;
         this.peso = peso;
         this.altura = altura;
         this.plano = plano;
+        this.login = login;
+        this.senha = senha; 
     }
 
-    public String getId() {
+    
+
+    public String getLogin() {
+        return login;
+    }
+    public void setLogin(String login) {
+        this.login = login;
+    }
+    public String getSenha() {
+        return senha;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+    public int getId() {
         return id;
     }
     
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -82,5 +101,6 @@ public class Aluno {
         System.out.println("Plano: " + plano);
     }
     
-
 }
+
+
