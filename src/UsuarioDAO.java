@@ -46,13 +46,13 @@ public class UsuarioDAO {
         return null;
     }
 
-    public void excluirUsuario(String login) {
-        String sql = "DELETE FROM usuarios WHERE login = ?";
+    public void excluirUsuario(int id) {
+        String sql = "DELETE FROM usuarios WHERE id = ?";
 
         try (Connection conn = Conexao.conectar();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, login);
+            stmt.setInt(1, id);
             int linhas = stmt.executeUpdate();
 
             if (linhas > 0) {
